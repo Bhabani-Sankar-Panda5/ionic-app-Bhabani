@@ -1,0 +1,7 @@
+{
+  "name": "ARS-STEEL",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

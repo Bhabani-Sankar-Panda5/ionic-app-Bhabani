@@ -1,0 +1,172 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+/* --- DASHBOARD CARD STYLES --- */
+.attendance-card {
+  background-color: #ffffff;
+  border-radius: 18px;
+  padding: 12px 16px; 
+  width: 100%;
+  box-sizing: border-box; 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  margin-top: 15px; 
+  cursor: pointer;
+}
+
+.left-wrapper { display: flex; align-items: center; gap: 12px; }
+.icon-circle {
+  background-color: #EBF2FF; width: 40px; height: 40px; min-width: 40px; border-radius: 12px;
+  display: flex; justify-content: center; align-items: center;
+  .icon-stack {
+    position: relative; width: 24px; height: 24px; display: flex; justify-content: center; align-items: center;
+    .main-icon { color: #3062FA; font-size: 1.5rem; }
+    .check-overlay {
+      position: absolute; right: -4px; bottom: -1px; font-size: 0.9rem;
+      color: #3062FA; background-color: #EBF2FF; border-radius: 50%; --ionicon-stroke-width: 60px; 
+    }
+  }
+}
+.text-content {
+  display: flex; flex-direction: column;
+  h3 { margin: 0; font-size: 0.95rem; font-weight: 700; color: #000; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+  p { margin: 1px 0 0 0; font-size: 0.75rem; color: #808080; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+}
+.right-wrapper {
+  display: flex; align-items: center;
+  .arrow-bg {
+    width: 30px; height: 30px; background-color: #F2F4F8; border-radius: 50%; display: flex; justify-content: center; align-items: center;
+    ion-icon { color: #888; font-size: 1.1rem; }
+  }
+}
+
+/* --- FULL PAGE FORM STYLES --- */
+.full-page-wrapper {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  background-color: #f4f6f8; z-index: 1000; overflow-y: auto;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.header-bar {
+  /* THEME COLOR: #1060AA */
+  background-color: #1060AA; 
+  height: 60px; display: flex; align-items: center; padding: 0 16px; color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  
+  .back-btn {
+    background: rgba(255, 255, 255, 0.25); border: none; border-radius: 4px;
+    width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 1.2rem; cursor: pointer;
+  }
+  
+  h2 { 
+    flex: 1; 
+    text-align: center; 
+    margin: 0; 
+    padding-right: 32px; /* balances the back button width to keep text perfectly centered */
+    
+    /* CHANGED: Increased font size */
+    font-size: 1.5rem; 
+    font-weight: 600; 
+  }
+}
+
+.ma-content {
+  padding: 20px; 
+  width: 100%;
+  max-width: 100%; 
+  box-sizing: border-box;
+}
+
+/* Info Banner */
+.info-banner {
+  background-color: #eaf5fc; 
+  border-radius: 4px;
+  display: flex;
+  margin-bottom: 25px;
+  
+  /* THEME COLOR: #1060AA */
+  border-left: 4px solid #1060AA;
+  
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.info-text {
+  padding: 15px 20px;
+  display: flex; flex-direction: column;
+  
+  /* THEME COLOR: #1060AA */
+  .info-date { 
+    color: #1060AA; 
+    font-weight: 700; font-size: 0.95rem; margin-bottom: 5px; 
+  }
+  .info-sub { color: #999; font-size: 0.8rem; }
+}
+
+/* Form Card */
+.form-card {
+  background: white; border-radius: 8px; padding: 30px;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.03);
+  
+  width: 100%;
+  box-sizing: border-box;
+  
+  .card-title { margin-top: 0; margin-bottom: 25px; font-size: 1rem; font-weight: 700; color: #000; }
+}
+
+/* Inputs */
+.form-group {
+  margin-bottom: 25px;
+  .input-label {
+    display: block; font-size: 0.7rem; font-weight: 700; color: #555; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;
+    .required { color: #e74c3c; }
+  }
+  .form-input {
+    width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px;
+    font-size: 0.95rem; color: #333; outline: none; background-color: #fff; box-sizing: border-box;
+    
+    /* THEME COLOR FOCUS */
+    &:focus { border-color: #1060AA; }
+  }
+  .file-input {
+    padding: 10px;
+    background: #fff;
+  }
+}
+
+/* Button Styling */
+.btn-container { margin-top: 20px; }
+
+.check-in-btn {
+  width: 100%;
+  padding: 15px;
+  background-color: #e2e5ea; 
+  color: #9eaab8;
+  font-weight: 700;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  cursor: not-allowed;
+  transition: all 0.3s ease;
+
+  /* ACTIVE STATE: #1060AA */
+  &.active-btn {
+    background-color: #1060AA; 
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(16, 96, 170, 0.3);
+    
+    &:hover {
+      background-color: #0e5291;
+    }
+  }
+}
+
+.fade-in { animation: fadeIn 0.3s ease-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }

@@ -1,0 +1,162 @@
+// Royal Blue matched to image
+$card-color: #1060AA; 
+$text-white: #ffffff;
+// New variable for the light blue background seen in the image
+$icon-box-bg: #E2F2FC; 
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; 
+  width: 100%;
+}
+
+// Global Text Styles for headers and spans
+span, h1, h2, h3, .label, .sub-label {
+  color: $text-white;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+// --- Common Icon Box (UPDATED) ---
+.icon-box {
+  background-color: $icon-box-bg; // Changed to Light Blue
+  border-radius: 14px; // Squircle shape
+  width: 48px;  // Slightly larger to match image proportion
+  height: 48px;
+  min-width: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 12px;
+  
+  // Target SVG instead of ion-icon
+  svg {
+    width: 24px;
+    height: 24px;
+    // The fill is already defined in the HTML as #1064A3 (Dark Blue)
+    // which contrasts perfectly with the light blue background.
+  }
+}
+
+// --- Top Row (Small Cards) ---
+.stats-row {
+  display: flex;        
+  flex-direction: row; 
+  width: 100%;          
+  gap: 16px; 
+}
+
+.card-small {
+  background-color: $card-color;
+  border-radius: 12px;
+  padding: 16px; 
+  flex: 1;              
+  width: 100%;          
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(16, 96, 170, 0.2);
+
+  .text-box {
+    display: flex;
+    flex-direction: column;
+    
+    .label {
+      font-size: 0.75rem;
+      opacity: 0.9;
+      margin-bottom: 2px;
+    }
+
+    h2 { 
+      margin: 0; 
+      font-size: 1.6rem; 
+      font-weight: 600; 
+      line-height: 1.1;
+      color: $text-white; 
+    }
+  }
+}
+
+// --- Bottom Card (Large) ---
+.card-large {
+  background-color: $card-color;
+  border-radius: 12px;
+  padding: 18px; 
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 4px 10px rgba(16, 96, 170, 0.2);
+  
+  display: flex;
+  flex-direction: row; 
+  justify-content: space-between;
+  align-items: center;
+
+  // Left Side
+  .left-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .data-section {
+      display: flex;
+      flex-direction: column;
+      
+      .label {
+        font-size: 0.75rem;
+        opacity: 0.8;
+      }
+
+      .big-number {
+        font-size: 1.8rem;
+        font-weight: 600;
+        line-height: 1.2;
+        color: $text-white; 
+      }
+
+      .sub-label {
+        font-size: 0.7rem;
+        opacity: 0.8;
+      }
+    }
+  }
+
+  // Right Side
+  .right-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 100px; 
+
+    .label {
+      font-size: 0.75rem;
+      opacity: 0.8;
+      margin-bottom: 2px;
+    }
+
+    .big-number {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: $text-white; 
+    }
+
+    // Progress Bar Style
+    .progress-track {
+      width: 100%;
+      height: 5px;
+      background-color: rgba(0,0,0,0.3); // Dark track
+      border-radius: 4px;
+      overflow: hidden;
+      
+      .progress-fill {
+        height: 100%;
+        background-color: #ffffff; // White fill
+        border-radius: 4px;
+      }
+    }
+  }
+}

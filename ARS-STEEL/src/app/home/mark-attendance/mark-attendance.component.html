@@ -1,0 +1,108 @@
+<!-- VIEW 1: DASHBOARD CARD -->
+<div class="attendance-card" *ngIf="!isFormOpen" (click)="openCheckIn()">
+  <div class="left-wrapper">
+    <div class="icon-circle">
+      <div class="icon-stack">
+        <ion-icon name="person-outline" class="main-icon"></ion-icon>
+        <ion-icon name="checkmark-outline" class="check-overlay"></ion-icon>
+      </div>
+    </div>
+    <div class="text-content">
+      <h3>Mark Attendance</h3>
+      <p>Record your daily presence</p>
+    </div>
+  </div>
+  <div class="right-wrapper">
+    <div class="arrow-bg">
+      <ion-icon name="arrow-forward-outline"></ion-icon>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW 2: FULL PAGE FORM -->
+<div class="full-page-wrapper" *ngIf="isFormOpen">
+  
+  <div class="header-bar">
+    <button class="back-btn" (click)="goBack()">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </button>
+    <h2>Mark Attendance</h2>
+  </div>
+
+  <div class="ma-content">
+    
+    <!-- Info Banner (Full width alignment) -->
+    <div class="info-banner">
+      <div class="info-text">
+        <span class="info-date">{{ currentDateTime }}</span>
+        <span class="info-sub">Recording attendance details</span>
+      </div>
+    </div>
+
+    <!-- Form Card -->
+    <div class="form-card">
+      <h3 class="card-title">Transport Details</h3>
+
+      <!-- 1. Mode Selection -->
+      <div class="form-group">
+        <label class="input-label">MODE OF TRANSPORT <span class="required">*</span></label>
+        <select class="form-input" [(ngModel)]="transportMode">
+          <option value="" disabled selected>Select transport mode</option>
+          <option value="private">Private</option>
+          <option value="public">Public</option>
+        </select>
+      </div>
+
+      <!-- PRIVATE FORM -->
+      <div *ngIf="transportMode === 'private'" class="fade-in">
+        <div class="form-group">
+          <label class="input-label">VEHICLE TYPE <span class="required">*</span></label>
+          <select class="form-input" [(ngModel)]="vehicleType">
+            <option value="" disabled selected>Select vehicle type</option>
+            <option value="car">Car</option>
+            <option value="bike">Bike</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="input-label">ODOMETER START READING (KM) <span class="required">*</span></label>
+          <input type="number" class="form-input" placeholder="Enter KM" [(ngModel)]="odometerReading">
+        </div>
+
+        <div class="form-group">
+          <label class="input-label">ODOMETER START PHOTO <span class="required">*</span></label>
+          <input type="file" accept="image/png, image/jpeg" class="form-input file-input" (change)="onFileSelected($event, 'private')">
+        </div>
+      </div>
+
+      <!-- PUBLIC FORM -->
+      <div *ngIf="transportMode === 'public'" class="fade-in">
+        <div class="form-group">
+          <label class="input-label">PUBLIC TRANSPORT TYPE <span class="required">*</span></label>
+          <select class="form-input" [(ngModel)]="publicTransportType">
+            <option value="" disabled selected>Select public transport</option>
+            <option value="bus">Bus</option>
+            <option value="train">Train</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="input-label">UPLOAD TICKET/BILL <span class="required">*</span></label>
+          <input type="file" accept="image/png, image/jpeg" class="form-input file-input" (change)="onFileSelected($event, 'public')">
+        </div>
+      </div>
+
+      <!-- CHECK-IN BUTTON 
+           The class 'active-btn' is added only when isFormValid is true -->
+      <div class="btn-container">
+        <button class="check-in-btn" 
+                [class.active-btn]="isFormValid" 
+                [disabled]="!isFormValid"
+                (click)="onCheckIn()">
+          CHECK-IN
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
