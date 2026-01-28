@@ -1,0 +1,51 @@
+<!-- ================= IONIC HEADER ================= -->
+<ion-header>
+  <ion-toolbar class="customer-header">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" (click)="goBack()">
+        <ion-icon name="chevron-back-outline" class="heading-icon"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title slot="start" class="header-title">
+      Customer Data
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<!-- ================= CONTENT ================= -->
+<ion-content>
+  <div class="main-wrapper">
+  <ion-item
+  *ngFor="let customer of customers; trackBy: trackByCustomer"
+  
+  routerLink="/customer-details"
+  class="customer-card"
+  lines="none"
+  detail="false">
+
+  <div class="card-left">
+    <h3 class="customer-name">{{ customer.name }}</h3>
+
+    <div class="info-row">
+      <ion-icon name="location-outline"></ion-icon>
+      <p>{{ customer.address }}</p>
+    </div>
+
+    <div class="info-row">
+      <ion-icon name="person-outline"></ion-icon>
+      <p>{{ customer.personName }}</p>
+    </div>
+
+    <div class="info-row">
+      <ion-icon name="call-outline"></ion-icon>
+      <p>{{ customer.phone }}</p>
+    </div>
+  </div>
+
+  <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+</ion-item>
+
+
+  </div>
+</ion-content>

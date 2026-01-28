@@ -1,0 +1,180 @@
+/* HEADER */
+.customer-header {
+  --background: linear-gradient(
+  to right,
+  #1064a3,
+  #1064a3,
+  #1064a3
+); 
+  --color: #ffffff;
+  min-height: 80px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+
+}
+
+.header-title {
+  font-size: 23px;
+  font-weight: 500;
+  margin-top: 6px;
+}
+
+.heading-icon {
+  font-size: 30px;
+  color: #ffffff;
+  margin-top: 10px;
+}
+
+/* MAIN WRAPPER */
+.main-wrapper {
+  padding: 16px;
+}
+
+/* CUSTOMER TABLE */
+.customer-table {
+    border: 1px solid #e7e9ea;
+  border-radius: 5px;
+  overflow: hidden; /* keeps borders clean on corners */
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+
+  .row {
+    display: flex;
+    border-bottom: 1px solid #e7e9ea;
+
+    .label {
+      width: 40%;
+      flex: 1;
+      background-color: #f3f4f4;
+      padding: 10px 12px;
+      font-weight: 500;
+      font-size: 14px;
+      color: #434343;
+      border-right: 1px solid #e7e9ea;
+    }
+
+    .value {
+      flex: 2;
+      width: 60%;
+      font-size: 14px;
+      background-color: #ffffff;
+      color: #909090; /* near-black */
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* MOBILE VALUE STYLE */
+    .mobile-value {
+      color: #1064a3;
+
+      ion-icon {
+        color: #1064a3;
+        font-size: 18px;
+      }
+    }
+  }
+
+  .row + .row {
+    margin-top: 4px;
+  }
+}
+
+/* REMOVE BORDER FROM LAST ROW */
+.customer-table .row:last-child {
+  border-bottom: none;
+}
+
+/* LAST VISIT CARD */
+.last-visit-card {
+  background: linear-gradient(
+  to right,
+  #f7fcff,
+  #fbfeff,
+  #ffffff
+); 
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 2px solid #e7e9ea;
+}
+
+.last-visit-header {
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #0159a0;
+}
+
+.last-visit-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.visit-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #8e8e93;
+
+  ion-icon {
+    font-size: 16px;
+    color: #404040;
+  }
+}
+
+/* SEGMENT CONTAINER */
+.customer-segment {
+  --background: #f3f4f6;
+  --border-radius: 0;
+  margin-left: calc(-1 * var(--ion-safe-area-left));
+  margin-right: calc(-1 * var(--ion-safe-area-right));
+  margin-bottom: 12px;
+  height: 48px;
+}
+
+/* REMOVE ALL RADIUS */
+.customer-segment,
+.customer-segment ion-segment-button {
+  --border-radius: 0 !important;
+}
+
+/* SEGMENT BUTTON */
+.customer-segment ion-segment-button {
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: none;
+  --color: #4b5563; /* inactive text */
+}
+
+/* ACTIVE TAB — THIS IS THE KEY */
+.customer-segment ion-segment-button.segment-button-checked {
+  --color: #ffffff;
+}
+
+.customer-segment ion-segment-button::part(native) {
+  transition: background-color 0.25s ease;
+}
+
+/* THIS IS THE IMPORTANT PART */
+.customer-segment ion-segment-button.segment-button-checked::part(native) {
+  background-color: #0159a0;
+}
+
+/* TABS */
+.customer-tabs {
+  --background: #ffffff;
+
+  ion-tab-bar {
+    --background: #f8f9fa;
+    --color: #4b5563;
+    --color-selected: #0159a0;
+  }
+}

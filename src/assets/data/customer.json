@@ -1,0 +1,181 @@
+{
+  "customer": [
+      {
+        "customerId": "CUST-1001",
+        "name": "Sai Trades Pvt Limited",
+        "contactPerson": "Ramesh Kumar",
+        "mobile": "+91 9876543210",
+        "email": "ramesh.kumar@test.com",
+        "address": {
+          "billing": "Plot 45, Industrial Area, Whitefield, Bengaluru, Karnataka - 560066",
+          "shipping": "Warehouse 3, Logistics Park, Hosur Road, Bengaluru, Karnataka - 560068"
+        },
+        "segment": "Distributor"
+    },
+    {
+        "customerId": "CUST-1002",
+        "name": "Sai Trades Pvt Limited2",
+        "contactPerson": "Ramesh Kumar",
+        "mobile": "+91 9876543210",
+        "email": "ramesh.kumar@test.com",
+        "address": {
+          "billing": "Plot 45, Industrial Area, Whitefield, Bengaluru, Karnataka - 560066",
+          "shipping": "Warehouse 3, Logistics Park, Hosur Road, Bengaluru, Karnataka - 560068"
+        },
+        "segment": "Distributor"
+    },
+    {
+        "customerId": "CUST-1003",
+        "name": "Sai Trades Pvt Limited3",
+        "contactPerson": "Ramesh Kumar",
+        "mobile": "+91 9876543210",
+        "email": "ramesh.kumar@test.com",
+        "address": {
+          "billing": "Plot 45, Industrial Area, Whitefield, Bengaluru, Karnataka - 560066",
+          "shipping": "Warehouse 3, Logistics Park, Hosur Road, Bengaluru, Karnataka - 560068"
+        },
+        "segment": "Distributor"
+    },
+    {
+        "customerId": "CUST-1004",
+        "name": "Sai Trades Pvt Limited4",
+        "contactPerson": "Ramesh Kumar",
+        "mobile": "+91 9876543210",
+        "email": "ramesh.kumar@test.com",
+        "address": {
+          "billing": "Plot 45, Industrial Area, Whitefield, Bengaluru, Karnataka - 560066",
+          "shipping": "Warehouse 3, Logistics Park, Hosur Road, Bengaluru, Karnataka - 560068"
+        },
+        "segment": "Distributor"
+    },
+    {
+        "customerId": "CUST-1005",
+        "name": "Sai Trades Pvt Limited5",
+        "contactPerson": "Ramesh Kumar",
+        "mobile": "+91 9876543210",
+        "email": "ramesh.kumar@test.com",
+        "address": {
+          "billing": "Plot 45, Industrial Area, Whitefield, Bengaluru, Karnataka - 560066",
+          "shipping": "Warehouse 3, Logistics Park, Hosur Road, Bengaluru, Karnataka - 560068"
+        },
+        "segment": "Distributor"
+    },
+    {
+        "customerId": "CUST-1006",
+        "name": "Sai Trades Pvt Limited6",
+        "contactPerson": "Ramesh Kumar",
+        "mobile": "+91 9876543210",
+        "email": "ramesh.kumar@test.com",
+        "address": {
+          "billing": "Plot 45, Industrial Area, Whitefield, Bengaluru, Karnataka - 560066",
+          "shipping": "Warehouse 3, Logistics Park, Hosur Road, Bengaluru, Karnataka - 560068"
+        },
+        "segment": "Distributor"
+    }
+
+  ],
+
+  "salesRep": {
+    "repId": "REP-501",
+    "name": "Ankit Sharma",
+    "mobile": "+91 9123456789",
+    "email": "ankit.sharma@company.com"
+  },
+
+  "lastVisit": {
+    "visitId": "VIS-3001",
+    "visitDate": "2026-01-20",
+    "visitedBy": "Ankit Sharma",
+    "repMobile": "+91 9123456789",
+    "purpose": "Order Follow-up",
+    "remarks": "Customer confirmed next order for next month."
+  },
+
+  "orders": [
+    {
+      "orderId": "ORD-2026-1001",
+      "orderDate": "2026-01-18",
+      "totalItems": 12,
+      "orderValue": 24500,
+      "status": "Released",
+      "billToAddress": "Plot 45, Industrial Area, Whitefield, Bengaluru, Karnataka - 560066",
+      "shipToAddress": "Warehouse 3, Logistics Park"
+    },
+    {
+      "orderId": "ORD-2026-1002",
+      "orderDate": "2026-01-10",
+      "totalItems": 6,
+      "orderValue": 11800,
+      "status": "Dispatched",
+      "billToAddress": "Plot 45, Industrial Area, Whitefield, Bengaluru, Karnataka - 560066",
+      "shipToAddress": "Warehouse 3, Logistics Park"
+    },
+    {
+      "orderId": "ORD-2026-1003",
+      "orderDate": "2026-01-10",
+      "totalItems": 6,
+      "orderValue": 11800,
+      "status": "Dispatched",
+      "billToAddress": "Plot 45, Industrial Area, Whitefield, Bengaluru, Karnataka - 560066",
+      "shipToAddress": "Warehouse 3, Logistics Park"
+    },
+    {
+      "orderId": "ORD-2026-1004",
+      "orderDate": "2026-01-10",
+      "totalItems": 6,
+      "orderValue": 11800,
+      "status": "Dispatched",
+      "billToAddress": "Plot 45, Industrial Area, Whitefield, Bengaluru, Karnataka - 560066",
+      "shipToAddress": "Warehouse 3, Logistics Park"
+    }
+  ],
+
+  "complaints": [
+    {
+      "complaintId": "COMP-9001",
+      "relatedOrderId": "ORD-2026-1001",
+      "complaintDate": "2026-01-19",
+      "category": "Damaged Goods",
+      "description": "Packaging was damaged and items were partially broken.",
+      "priority": "High",
+      "status": "Open"
+    },
+    {
+      "complaintId": "COMP-9002",
+      "relatedOrderId": "ORD-2026-1001",
+      "complaintDate": "2026-01-19",
+      "category": "Damaged Goods",
+      "description": "Packaging was damaged and items were partially broken.",
+      "priority": "High",
+      "status": "Open"
+    },
+    {
+      "complaintId": "COMP-9002",
+      "relatedOrderId": "ORD-2026-1001",
+      "complaintDate": "2026-01-19",
+      "category": "Damaged Goods",
+      "description": "Packaging was damaged and items were partially broken.",
+      "priority": "High",
+      "status": "Open"
+    }
+  ],
+
+  "visits": [
+    {
+      "visitId": "VIS-3001",
+      "visitDate": "2026-01-20",
+      "visitedBy": "Ankit Sharma",
+      "repMobile": "+91 9123456789",
+      "purpose": "Order Follow-up",
+      "remarks": "Customer confirmed next order for next month."
+    },
+    {
+      "visitId": "VIS-3002",
+      "visitDate": "2025-12-28",
+      "visitedBy": "Ankit Sharma",
+      "repMobile": "+91 9123456789",
+      "purpose": "New Product Demo",
+      "remarks": "Customer showed interest in premium product line."
+    }
+  ]
+}

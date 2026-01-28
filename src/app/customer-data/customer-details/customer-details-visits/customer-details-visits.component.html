@@ -1,0 +1,67 @@
+<div class="visit-wrapper">
+
+  <!-- HEADER -->
+  <div class="visit-header">
+    <h3>Top 5 Visits</h3>
+    <button class="view-all">
+      View All
+      <ion-icon name="arrow-forward-outline"></ion-icon>
+    </button>
+  </div>
+
+  <!-- WRAPPER FOR SLIDER + ARROWS -->
+  <div class="visit-cards-wrapper">
+
+    <!-- LEFT ARROW -->
+    <button class="scroll-arrow left-arrow"
+            *ngIf="currentIndex > 0"
+            (click)="scrollLeft()">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </button>
+
+    <!-- CARDS CONTAINER -->
+    <div class="visit-cards" #cardsContainer>
+      <div class="visit-card"
+           *ngFor="let visit of visits; let i = index"
+           [attr.data-index]="i">
+
+        <div class="visit-card-header">
+          <div class="visit-icon">
+            <div class="icon-lines"></div>
+          </div>
+          <div class="visit-title">
+            Visit ID #: <span>{{ visit.visitId }}</span>
+          </div>
+        </div>
+
+        <div class="visit-detail">
+          <span class="label">Date:</span>
+          <span class="value">{{ visit.date }}</span>
+        </div>
+
+        <div class="visit-detail">
+          <span class="label">Purpose:</span>
+          <span class="value">{{ visit.purpose }}</span>
+        </div>
+
+        <div class="visit-detail">
+          <span class="label">Visited By:</span>
+          <span class="value">{{ visit.visitedBy }}</span>
+        </div>
+
+        <div class="visit-detail">
+          <span class="label">Remarks:</span>
+          <span class="value">{{ visit.remarks }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT ARROW -->
+    <button class="scroll-arrow right-arrow"
+            *ngIf="currentIndex < visits.length - 1"
+            (click)="scrollRight()">
+      <ion-icon name="arrow-forward-outline"></ion-icon>
+    </button>
+
+  </div>
+</div>

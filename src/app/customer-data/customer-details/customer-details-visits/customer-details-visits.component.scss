@@ -1,0 +1,143 @@
+.visit-wrapper {
+  width: 100%;
+  height: 70vh;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.visit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+
+  h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .view-all {
+    background: none;
+    border: none;
+    color: #1e88e5;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+}
+
+.visit-cards-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.visit-cards {
+  display: flex;
+  gap: 14px;
+  overflow-x: hidden;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 10px;
+}
+
+.visit-card {
+  min-width: 85%;
+  min-height: 320px;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+  display: flex;
+  flex-direction: column;
+}
+
+.visit-card-header {
+  display: flex;
+  align-items: center;
+  background: #e3f2fd;
+  padding: 16px 20px;
+  gap: 10px;
+}
+
+.visit-icon {
+  width: 36px;
+  height: 36px;
+  background: #f3f5f9;
+  border-radius: 6px;
+  border: 1px solid #1064a3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .icon-lines {
+    width: 18px;
+    height: 14px;
+    border-top: 2px solid #1064a3;
+    border-bottom: 2px solid #1064a3;
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 5px;
+      left: 0;
+      right: 0;
+      border-top: 2px solid #1064a3;
+    }
+  }
+}
+
+.visit-title {
+  color: #1064a3;
+  font-weight: 500;
+
+  span {
+    font-weight: 700;
+  }
+}
+
+.visit-detail {
+  display: flex;
+  gap: 6px;
+  font-size: 14px;
+  padding: 12px 20px;
+
+  .label {
+    color: #9ca3af;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .value {
+    color: #111827;
+    font-weight: 500;
+    flex: 1;
+  }
+}
+
+/* ARROWS */
+.scroll-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #1e88e5;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  cursor: pointer;
+
+  ion-icon {
+    color: #fff;
+    font-size: 20px;
+  }
+}
+
+.left-arrow { left: 10px; }
+.right-arrow { right: 10px; }

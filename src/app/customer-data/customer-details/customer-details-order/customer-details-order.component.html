@@ -1,0 +1,74 @@
+<div class="order-wrapper">
+
+  <!-- HEADER -->
+  <div class="order-header">
+    <h3>Top 5 Orders</h3>
+    <button class="view-all">
+      View All
+      <ion-icon name="arrow-forward-outline"></ion-icon>
+    </button>
+  </div>
+
+  <!-- SLIDER CONTAINER -->
+  <div class="order-cards-wrapper">
+
+    <!-- LEFT ARROW -->
+    <button
+      class="scroll-arrow left-arrow"
+      *ngIf="currentIndex > 0"
+      (click)="scrollLeft()">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </button>
+
+    <!-- CARDS (ONLY FLEX CONTENT) -->
+    <div class="order-cards" #cardsContainer>
+      <div
+        class="order-card"
+        *ngFor="let order of orders; let i = index">
+
+        <div class="order-card-header">
+          <div class="order-icon">
+            <div class="icon-lines"></div>
+          </div>
+          <div class="order-title">
+            Order ID #: <span>{{ order.orderNumber }}</span>
+          </div>
+        </div>
+
+        <div class="order-detail">
+          <span class="label">Order Date:</span>
+          <span class="value">{{ order.date }}</span>
+        </div>
+
+        <div class="order-detail">
+          <span class="label">Total Items:</span>
+          <span class="value">{{ order.items }}</span>
+        </div>
+
+        <div class="order-detail">
+          <span class="label">Order Value:</span>
+          <span class="value">₹{{ order.amount }}</span>
+        </div>
+
+        <div class="order-detail">
+          <span class="label">Status:</span>
+          <span class="value">{{ order.status }}</span>
+        </div>
+
+        <div class="order-detail">
+          <span class="label">Shipping Address:</span>
+          <span class="value">{{ order.address }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT ARROW -->
+    <button
+      class="scroll-arrow right-arrow"
+      *ngIf="currentIndex < orders.length - 1"
+      (click)="scrollRight()">
+      <ion-icon name="arrow-forward-outline"></ion-icon>
+    </button>
+
+  </div>
+</div>

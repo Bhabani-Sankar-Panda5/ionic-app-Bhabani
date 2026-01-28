@@ -1,0 +1,124 @@
+<ion-content [fullscreen]="true">
+
+  <div class="login-container" [class.has-keypad]="showKeypad">
+
+    <!-- HEADER -->
+    <header class="header-section">
+      <div class="back-button-wrapper" (click)="goBack()">
+        <ion-icon name="arrow-back-outline" class="back-icon"></ion-icon>
+      </div>
+    </header>
+
+    <!-- ILLUSTRATION -->
+    <div class="splash-illustration">
+      <img
+        src="assets/OTP_typing.png"
+        alt="OTP Illustration"
+        class="illustration-img"
+      />
+    </div>
+
+    <!-- TITLE -->
+    <div class="title-section">
+      <h2 class="otp-title">Enter OTP</h2>
+      <p class="otp-subtitle">
+        We have sent OTP to
+        <span class="bold-text">+91 89xxxxx199</span>
+      </p>
+    </div>
+
+    <!-- OTP BOXES -->
+    <div class="otp-box-container">
+      <div
+        class="otp-box"
+        *ngFor="let box of otpBoxes; let i = index"
+        [class.filled]="otp[i]"
+        [class.error]="isOtpError"
+        (click)="openKeypad()"
+      >
+        {{ otp[i] || '' }}
+      </div>
+    </div>
+
+    <!-- RESEND -->
+    <div class="resend-container" (click)="resendOtp()">
+      <ion-icon name="refresh-outline" class="resend-icon"></ion-icon>
+      <span class="resend-text">Resend OTP</span>
+    </div>
+
+    <!-- 🔥 VIRTUAL KEYPAD (IDENTICAL TO LOGIN) -->
+    <section class="virtual-keypad" *ngIf="showKeypad">
+
+      <div class="keypad-toolbar">
+        <div class="toolbar-left">
+          <ion-icon name="chevron-back" class="toolbar-icon"></ion-icon>
+        </div>
+
+        <div class="toolbar-center">
+          <span class="gif-text">GIF</span>
+          <ion-icon name="settings-sharp" class="toolbar-icon"></ion-icon>
+          <ion-icon name="language" class="toolbar-icon"></ion-icon>
+          <ion-icon name="happy-outline" class="toolbar-icon"></ion-icon>
+          <ion-icon name="ellipsis-horizontal" class="toolbar-icon"></ion-icon>
+        </div>
+
+        <div class="toolbar-right">
+          <ion-icon name="mic" class="toolbar-icon"></ion-icon>
+        </div>
+      </div>
+
+      <div class="keypad-grid">
+
+        <div class="keypad-row">
+          <button class="key-btn" (click)="onKeyPress('1')">
+            <span class="num">1</span>
+          </button>
+          <button class="key-btn" (click)="onKeyPress('2')">
+            <span class="num">2</span><span class="letters">ABC</span>
+          </button>
+          <button class="key-btn" (click)="onKeyPress('3')">
+            <span class="num">3</span><span class="letters">DEF</span>
+          </button>
+        </div>
+
+        <div class="keypad-row">
+          <button class="key-btn" (click)="onKeyPress('4')">
+            <span class="num">4</span><span class="letters">GHI</span>
+          </button>
+          <button class="key-btn" (click)="onKeyPress('5')">
+            <span class="num">5</span><span class="letters">JKL</span>
+          </button>
+          <button class="key-btn" (click)="onKeyPress('6')">
+            <span class="num">6</span><span class="letters">MNO</span>
+          </button>
+        </div>
+
+        <div class="keypad-row">
+          <button class="key-btn" (click)="onKeyPress('7')">
+            <span class="num">7</span><span class="letters">PQRS</span>
+          </button>
+          <button class="key-btn" (click)="onKeyPress('8')">
+            <span class="num">8</span><span class="letters">TUV</span>
+          </button>
+          <button class="key-btn" (click)="onKeyPress('9')">
+            <span class="num">9</span><span class="letters">WXYZ</span>
+          </button>
+        </div>
+
+        <div class="keypad-row bottom-row">
+          <button class="key-btn action-btn" (click)="onKeyPress('BACKSPACE')">
+            <ion-icon name="backspace-outline" class="action-icon"></ion-icon>
+          </button>
+          <button class="key-btn" (click)="onKeyPress('0')">
+            <span class="num">0</span>
+          </button>
+          <button class="key-btn action-btn" (click)="onKeyPress('ENTER')">
+            <ion-icon name="send" class="action-icon"></ion-icon>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+</ion-content>

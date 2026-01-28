@@ -1,0 +1,108 @@
+<!-- ================= IONIC HEADER ================= -->
+<ion-header *ngIf="customer">
+  <ion-toolbar class="customer-header">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" (click)="goBack()">
+        <ion-icon name="chevron-back-outline" class="heading-icon"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title class="header-title">{{ customer.name }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<!-- ================= CONTENT ================= -->
+<ion-content  *ngIf="customer; else loading">
+  <div class="main-wrapper">
+
+    <!-- ================= CUSTOMER INFO TABLE ================= -->
+    <div class="customer-table">
+
+      <!-- MOBILE (NEW FIRST ROW) -->
+      <div class="row">
+        <div class="label">Mobile</div>
+        <div class="value mobile-value">
+          {{ customer.mobile }}
+          <ion-icon name="call-outline"></ion-icon>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="label">Segment</div>
+        <div class="value">{{ customer.segment }}</div>
+      </div>
+
+      <div class="row">
+        <div class="label">Email ID</div>
+        <div class="value">{{ customer.email }}</div>
+      </div>
+
+      <div class="row">
+        <div class="label">Address</div>
+        <div class="value">{{ customer.address }}</div>
+      </div>
+    </div>
+
+    <!-- ================= LAST VISIT CARD ================= -->
+    <div class="last-visit-card">
+      <div class="last-visit-header">Last visited by</div>
+
+      <div class="last-visit-row">
+        <div class="visit-item">
+          <ion-icon name="person-outline"></ion-icon>
+          <span>{{ customer.lastVisitBy }}</span>
+        </div>
+
+        <div class="visit-item">
+          <ion-icon name="calendar-outline"></ion-icon>
+          <span>{{ customer.lastVisitDate }}</span>
+        </div>
+
+        <div class="visit-item">
+          <ion-icon name="call-outline"></ion-icon>
+          <span>{{ customer.lastVisitMobile }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= SEGMENT TABS ================= -->
+  <ion-segment [(ngModel)]="selectedTab" class="customer-segment">
+    <ion-segment-button value="orders">
+      <ion-label>Orders</ion-label>
+    </ion-segment-button>
+
+    <ion-segment-button value="complaints">
+      <ion-label>Complaints</ion-label>
+    </ion-segment-button>
+
+    <ion-segment-button value="visits">
+      <ion-label>Visits</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  <!-- ================= TAB CONTENT ================= -->
+    <div class="tab-content">
+
+      <!-- ORDERS -->
+      <app-customer-details-order
+        *ngIf="selectedTab === 'orders'">
+      </app-customer-details-order>
+
+      <!-- COMPLAINTS -->
+      <app-customer-details-complaints
+        *ngIf="selectedTab === 'complaints'">
+      </app-customer-details-complaints>
+
+            <!-- VISITS -->
+      <app-customer-details-visits
+        *ngIf="selectedTab === 'visits'">
+      </app-customer-details-visits>
+
+</div>
+
+
+  </div>
+</ion-content>
+
+<ng-template #loading>
+  <ion-spinner></ion-spinner>
+</ng-template>

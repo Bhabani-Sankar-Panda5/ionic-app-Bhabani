@@ -1,0 +1,100 @@
+ion-content {
+  --background: #ffffff;
+}
+
+/* ================= HEADER ================= */
+.customer-header {
+  --background: linear-gradient(
+  to right,
+  #1064a3,
+  #1064a3,
+  #1064a3
+); /* Dark blue */
+  --color: #ffffff;
+
+  min-height: 80px; /* Extra height */
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.header-title {
+  font-size: 23px;
+  font-weight: 500;
+  margin-top: 6px;
+}
+
+.heading-icon{
+  font-size: 30px;
+  color: #ffffff;
+  flex-shrink: 0;
+  margin-top: 10px;
+}
+
+/* ================= MAIN WRAPPER ================= */
+.main-wrapper {
+  padding: 16px;
+}
+
+/* ================= CUSTOMER CARD ================= */
+.customer-card {
+  background-color: #ffffff;
+  border-radius: 5px;
+  border: none;
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12);
+  
+  /* 🔥 FIX: Remove CSS transition fighting Ionic taps */
+  transition: none !important;
+}
+
+
+.customer-card:active {
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.18);
+}
+/* Card layout */
+.card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* ✅ centers chevron vertically */
+  gap: 12px;
+}
+
+.card-left {
+  flex: 1;
+}
+
+.customer-name {
+  font-size: 22px;
+  font-weight: 500;
+  color: #1f2937;
+  margin: 0 0 8px;
+}
+
+/* ================= INFO ROW ================= */
+.info-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.info-row ion-icon {
+  font-size: 16px;
+  color: #909090;
+  margin-top: 2px;
+}
+
+.info-row p {
+  font-size: 13px;
+  color: #909090;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ================= CHEVRON ================= */
+.chevron-icon {
+  font-size: 20px;
+  color: #909090;
+  flex-shrink: 0;
+}

@@ -1,0 +1,73 @@
+<div class="complaint-wrapper">
+
+  <!-- HEADER -->
+  <div class="complaint-header">
+    <h3>Top 5 Complaints</h3>
+    <button class="view-all">
+      View All
+      <ion-icon name="arrow-forward-outline"></ion-icon>
+    </button>
+  </div>
+
+  <!-- SLIDER CONTAINER -->
+  <div class="complaint-cards-wrapper">
+
+    <!-- LEFT ARROW -->
+    <button class="scroll-arrow left-arrow"
+            *ngIf="currentIndex > 0"
+            (click)="scrollLeft()">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </button>
+
+    <!-- CARDS FLEX CONTAINER -->
+    <div class="complaint-cards" #cardsContainer>
+      <div class="complaint-card"
+           *ngFor="let complaint of complaints; let i = index"
+           [attr.data-index]="i">
+
+        <div class="complaint-card-header">
+          <div class="complaint-icon">
+            <div class="icon-lines"></div>
+          </div>
+          <div class="complaint-title">
+            Complaint ID #: <span>{{ complaint.complaintId }}</span>
+          </div>
+        </div>
+
+        <div class="complaint-detail">
+          <span class="label">Date:</span>
+          <span class="value">{{ complaint.date }}</span>
+        </div>
+
+        <div class="complaint-detail">
+          <span class="label">Category:</span>
+          <span class="value">{{ complaint.category }}</span>
+        </div>
+
+        <div class="complaint-detail">
+          <span class="label">Status:</span>
+          <span class="value">{{ complaint.status }}</span>
+        </div>
+
+        <div class="complaint-detail">
+          <span class="label">Priority:</span>
+          <span class="value">{{ complaint.priority }}</span>
+        </div>
+
+        <div class="complaint-detail">
+          <span class="label">Order ID:</span>
+          <span class="value">{{ complaint.relatedOrderId }}</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT ARROW -->
+    <button class="scroll-arrow right-arrow"
+            *ngIf="currentIndex < complaints.length - 1"
+            (click)="scrollRight()">
+      <ion-icon name="arrow-forward-outline"></ion-icon>
+    </button>
+
+  </div>
+</div>
