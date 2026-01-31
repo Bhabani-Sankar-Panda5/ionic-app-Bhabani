@@ -15,7 +15,7 @@ ion-content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 60px;
+  padding-top: 28px;
   box-sizing: border-box;
 
   position: relative;
@@ -34,7 +34,7 @@ ion-content {
 /* ================= HEADER ================= */
 .header-section {
   width: 100%;
-  height: 70px;
+  height: 56px;
   padding: 0 20px;
   display: flex;
   align-items: center;
@@ -50,6 +50,7 @@ ion-content {
   display: flex;
   align-items: center;
   cursor: pointer;
+  padding-top: 6px;
 }
 
 .back-icon {
@@ -62,13 +63,13 @@ ion-content {
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-bottom: 16px; // ⬇️ was 24px
+  // margin-bottom: -10px; // ⬇️ was 24px
 }
 
 .illustration-img {
   width: 100%;
   max-width: 240px;   // ⬇️ was 280px
-  height: auto;
+  height: 190px;
   object-fit: contain;
 }
 

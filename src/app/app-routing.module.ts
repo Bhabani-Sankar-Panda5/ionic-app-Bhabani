@@ -6,7 +6,7 @@ const routes: Routes = [
   // ✅ DEFAULT PAGE → LOGIN
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'customer-data',
     pathMatch: 'full',
   },
 
@@ -18,9 +18,20 @@ const routes: Routes = [
         .then(m => m.LoginPage),
   },
   {
+    path: 'forgot-password',
+    loadComponent: () =>
+      import('./auth/forgot-password/forgot-password.page')
+        .then(m => m.ForgotPasswordPage)
+  },
+  {
   path: 'login-otp',
   loadComponent: () =>
     import('./auth/login-otp/login-otp.page').then(m => m.LoginOtpPage)
+  },
+  {
+  path: 'login-mobile',
+  loadComponent: () =>
+    import('./auth/login-mobile/login-mobile.page').then(m => m.LoginMobilePage)
   },
 
   // CUSTOMER LIST PAGE

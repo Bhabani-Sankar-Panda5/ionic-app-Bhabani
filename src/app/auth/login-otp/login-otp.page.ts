@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
+import { ActivatedRoute } from '@angular/router';
+
 
 @Component({
   selector: 'app-login-otp',
@@ -16,15 +19,31 @@ export class LoginOtpPage {
   otpBoxes = new Array(4);
   showKeypad = true;
   isOtpError = false;
+  mobileNumber!: string;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private route: ActivatedRoute
+  ) {}
+
+  ngOnInit() {
+      const mobile = this.route.snapshot.queryParamMap.get('mobile');
+
+      if (!mobile) {
+        this.router.navigate(['/login-mobile']);
+        return;
+      }
+
+      this.mobileNumber = mobile;
+  }
 
   openKeypad() {
     this.showKeypad = true;
   }
 
   goBack() {
-    this.router.navigate(['/login']);
+    this.router.navigate(['/login-mobile']);
   }
 
   onKeyPress(key: string) {
@@ -43,25 +62,30 @@ export class LoginOtpPage {
     }
   }
 
-  verifyOtp() {
-    if (this.otp.join('') !== '5555') {
-          this.isOtpError = true;
+async verifyOtp() {
+    const otpValue = this.otp.join('');
+    const isValid = await this.authService.verifyOtp(otpValue);
 
-    // Add class to container for styling
-    const container = document.querySelector('.login-container');
-    container?.classList.add('otp-error');
+    if (!isValid) {
+      this.isOtpError = true;
+      this.otp = [];
+      return;
+    }
 
-    return;
+  // ✅ 1️⃣ Create OTP session
+  await this.authService.createOtpSession();
+
+  // ✅ 2️⃣ Mark OTP verified (store loginDate)
+  await this.authService.markOtpVerified();
+
+  // ✅ 3️⃣ Navigate to Home
+  this.router.navigate(['/home']);
+
+    
   }
 
-  this.isOtpError = false;
 
-  // Remove class if previously added
-  const container = document.querySelector('.login-container');
-  container?.classList.remove('otp-error');
 
-  console.log('OTP Verified');
-  }
 
   resendOtp() {
   this.otp = [];

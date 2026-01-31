@@ -1,0 +1,133 @@
+<ion-content [fullscreen]="true">
+  
+  <div class="login-container" [class.has-keypad]="showKeypad">
+    
+    <header class="header-section">
+      <div class="back-button-wrapper" *ngIf="isError" (click)="goToThirdScreen()">
+        <ion-icon name="arrow-back-outline" class="back-icon"></ion-icon>
+      </div>
+      
+      <div class="logo-wrapper">
+        <img
+          src="https://api.builder.io/api/v1/image/assets/TEMP/2d5826d58c22c1d10e86105e94fc8c7642f220f5?width=476"
+          alt="ARS Green Steel Logo"
+          class="company-logo"
+        />
+      </div>
+    </header>
+
+    <main class="form-content">
+      
+      <div class="error-banner" *ngIf="isError">
+        <ion-icon name="close-circle" class="error-icon-badge"></ion-icon>
+        <span class="error-text">Invalid mobile number</span>
+      </div>
+
+      <div class="title-section">
+        <h2 class="login-title">Login with OTP</h2>
+        <p class="subtitle">Enter Your Registered Mobile Number</p>
+      </div>
+
+      <form class="login-form" (submit)="$event.preventDefault()">
+        
+        <div class="input-field" 
+             [class.active-focus]="showKeypad && !isError"
+             [class.error-state]="isError">
+          
+          <div class="phone-icon-wrapper">
+             <ion-icon name="phone-portrait-outline" class="input-icon"></ion-icon>
+          </div>
+          
+          <div class="input-wrapper">
+            <input
+              type="text"
+              readonly="true"
+              [value]="formattedNumber"
+              (click)="openKeypad()"
+              class="mobile-input"
+              placeholder="Mobile number" 
+            />
+          </div>
+        </div>
+
+        <div class="button-container">
+          <button 
+            type="button" 
+            class="otp-button" 
+            (click)="requestOTP()"
+            [disabled]="isLoading">
+            <span class="button-text">{{ isLoading ? 'Sending...' : 'Request OTP' }}</span>
+          </button>
+        </div>
+        
+      </form>
+    </main>
+
+    <section class="virtual-keypad" *ngIf="showKeypad">
+        
+        <div class="keypad-toolbar">
+            <div class="toolbar-left">
+                <ion-icon name="chevron-back" class="toolbar-icon"></ion-icon>
+            </div>
+            <div class="toolbar-center">
+                <span class="gif-text">GIF</span>
+                <ion-icon name="settings-sharp" class="toolbar-icon"></ion-icon>
+                <ion-icon name="language" class="toolbar-icon"></ion-icon>
+                <ion-icon name="happy-outline" class="toolbar-icon"></ion-icon>
+                <ion-icon name="ellipsis-horizontal" class="toolbar-icon"></ion-icon>
+            </div>
+            <div class="toolbar-right">
+                <ion-icon name="mic" class="toolbar-icon"></ion-icon>
+            </div>
+        </div>
+
+        <div class="keypad-grid">
+            <div class="keypad-row">
+                <button class="key-btn" (click)="onKeyPress('1')">
+                    <span class="num">1</span>
+                </button>
+                <button class="key-btn" (click)="onKeyPress('2')">
+                    <span class="num">2</span><span class="letters">ABC</span>
+                </button>
+                <button class="key-btn" (click)="onKeyPress('3')">
+                    <span class="num">3</span><span class="letters">DEF</span>
+                </button>
+            </div>
+            <div class="keypad-row">
+                <button class="key-btn" (click)="onKeyPress('4')">
+                    <span class="num">4</span><span class="letters">GHI</span>
+                </button>
+                <button class="key-btn" (click)="onKeyPress('5')">
+                    <span class="num">5</span><span class="letters">JKL</span>
+                </button>
+                <button class="key-btn" (click)="onKeyPress('6')">
+                    <span class="num">6</span><span class="letters">MNO</span>
+                </button>
+            </div>
+            <div class="keypad-row">
+                <button class="key-btn" (click)="onKeyPress('7')">
+                    <span class="num">7</span><span class="letters">PQRS</span>
+                </button>
+                <button class="key-btn" (click)="onKeyPress('8')">
+                    <span class="num">8</span><span class="letters">TUV</span>
+                </button>
+                <button class="key-btn" (click)="onKeyPress('9')">
+                    <span class="num">9</span><span class="letters">WXYZ</span>
+                </button>
+            </div>
+            <div class="keypad-row bottom-row">
+                <button class="key-btn action-btn" (click)="onKeyPress('BACKSPACE')">
+                    <ion-icon name="backspace-outline" class="action-icon"></ion-icon>
+                </button>
+                <button class="key-btn" (click)="onKeyPress('0')">
+                    <span class="num">0</span>
+                </button>
+                <button class="key-btn action-btn" (click)="onKeyPress('ENTER')">
+                     <ion-icon name="send" class="action-icon"></ion-icon>
+                </button>
+            </div>
+        </div>
+    </section>
+
+  </div>
+</ion-content>

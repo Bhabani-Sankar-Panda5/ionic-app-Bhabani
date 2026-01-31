@@ -1,4 +1,4 @@
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="false">
   
   <div class="splash-container" *ngIf="showSplash">
     <div class="splash-logo-wrapper">
@@ -39,12 +39,14 @@
       
       <div class="error-banner" *ngIf="isError">
         <ion-icon name="close-circle" class="error-icon-badge"></ion-icon>
-        <span class="error-text">Invalid mobile number</span>
+        <span class="error-text">Invalid Employee id or password</span>
       </div>
 
       <div class="title-section">
-        <h2 class="login-title">Login with OTP</h2>
-        <p class="subtitle">Enter Your Registered Mobile Number</p>
+        <h2 class="login-title">Welcome!</h2>
+        <p class="subtitle">
+          Enter your Employee ID and Password
+        </p>
       </div>
 
       <form class="login-form" (submit)="$event.preventDefault()">
@@ -60,29 +62,72 @@
           <div class="input-wrapper">
             <input
               type="text"
-              readonly="true"
-              [value]="formattedNumber"
-              (click)="openKeypad()"
+              name="employeeId"
+              [(ngModel)]="employeeId"
               class="mobile-input"
-              placeholder="Mobile number" 
+              placeholder="Employee ID"
+              (focus)="activeField = 'employeeId'; showKeypad = true"
             />
           </div>
         </div>
+
+        <div class="input-field" 
+          [class.active-focus]="showKeypad && !isError"
+          [class.error-state]="isError">
+          <div class="phone-icon-wrapper">
+            <ion-icon name="lock-closed-outline" class="input-icon"></ion-icon>
+          </div>
+
+          <div class="input-wrapper">
+            <input
+              type="password"
+              name="password"
+              [(ngModel)]="password"
+              class="mobile-input"
+              placeholder="Password"
+              (focus)="activeField = 'password'; showKeypad = true"
+            />
+          </div>
+        </div>
+
+        <!-- GPS status + Forgot Password row -->
+          <div class="helper-row">
+
+            <!-- GPS Inactive (LEFT) -->
+            <div class="gps-status">
+              <ion-icon name="location-outline" class="gps-icon"></ion-icon>
+              <span class="gps-text">
+                GPS Inactive<span class="gps-star">*</span>
+              </span>
+            </div>
+
+            <!-- Forgot Password (RIGHT) -->
+            <button type="button" class="forgot-password-btn" (click)="openForgotPassword()">
+              Forgot Password?
+            </button>
+
+          </div>
 
         <div class="button-container">
           <button 
             type="button" 
             class="otp-button" 
-            (click)="requestOTP()"
+            (click)="login()"
             [disabled]="isLoading">
-            <span class="button-text">{{ isLoading ? 'Sending...' : 'Request OTP' }}</span>
+            <span class="button-text">{{ isLoading ? 'Logging in...' : 'Login' }}</span>
+          </button>
+        </div>
+        <!-- Login with OTP -->
+        <div class="login-otp-wrapper">
+          <button type="button" class="login-otp-btn" (click)="openLoginMobile()">
+            Login with OTP
           </button>
         </div>
         
       </form>
     </main>
 
-    <section class="virtual-keypad" *ngIf="showKeypad">
+     <section class="virtual-keypad" *ngIf="showKeypad">
         
         <div class="keypad-toolbar">
             <div class="toolbar-left">
@@ -102,47 +147,38 @@
 
         <div class="keypad-grid">
             <div class="keypad-row">
-                <button class="key-btn" (click)="onKeyPress('1')">
-                    <span class="num">1</span>
-                </button>
-                <button class="key-btn" (click)="onKeyPress('2')">
-                    <span class="num">2</span><span class="letters">ABC</span>
-                </button>
-                <button class="key-btn" (click)="onKeyPress('3')">
-                    <span class="num">3</span><span class="letters">DEF</span>
-                </button>
-            </div>
-            <div class="keypad-row">
-                <button class="key-btn" (click)="onKeyPress('4')">
-                    <span class="num">4</span><span class="letters">GHI</span>
-                </button>
-                <button class="key-btn" (click)="onKeyPress('5')">
-                    <span class="num">5</span><span class="letters">JKL</span>
-                </button>
-                <button class="key-btn" (click)="onKeyPress('6')">
-                    <span class="num">6</span><span class="letters">MNO</span>
-                </button>
-            </div>
-            <div class="keypad-row">
-                <button class="key-btn" (click)="onKeyPress('7')">
-                    <span class="num">7</span><span class="letters">PQRS</span>
-                </button>
-                <button class="key-btn" (click)="onKeyPress('8')">
-                    <span class="num">8</span><span class="letters">TUV</span>
-                </button>
-                <button class="key-btn" (click)="onKeyPress('9')">
-                    <span class="num">9</span><span class="letters">WXYZ</span>
-                </button>
+                 <button class="key-btn" *ngFor="let k of currentKeys[0]" (click)="onKeyPress(k)">
+                    <span class="num">{{ k }}</span>
+                  </button>
+                </div>
+
+                <!-- ROW 2 -->
+                <div class="keypad-row">
+                  <button class="key-btn" *ngFor="let k of currentKeys[1]" (click)="onKeyPress(k)">
+                    <span class="num">{{ k }}</span>
+                  </button>
+                </div>
+
+                <!-- ROW 3 -->
+                <div class="keypad-row">
+                  <button class="key-btn" *ngFor="let k of currentKeys[2]" (click)="onKeyPress(k)">
+                    <span class="num">{{ k }}</span>
+                  </button>
             </div>
             <div class="keypad-row bottom-row">
+                <!-- TOGGLE ABC / 123 -->
+                <button class="key-btn action-btn" (click)="toggleKeyboard()">
+                  <span class="num">{{ keyboardMode === 'abc' ? '123' : 'ABC' }}</span>
+                </button>
+
+                <!-- SPACE / 0 -->
+                <button class="key-btn" (click)="onKeyPress(' ')">
+                  <span class="num">Space</span>
+                </button>
+
+                <!-- BACKSPACE -->
                 <button class="key-btn action-btn" (click)="onKeyPress('BACKSPACE')">
-                    <ion-icon name="backspace-outline" class="action-icon"></ion-icon>
-                </button>
-                <button class="key-btn" (click)="onKeyPress('0')">
-                    <span class="num">0</span>
-                </button>
-                <button class="key-btn action-btn" (click)="onKeyPress('ENTER')">
-                     <ion-icon name="send" class="action-icon"></ion-icon>
+                  <ion-icon name="backspace-outline" class="action-icon"></ion-icon>
                 </button>
             </div>
         </div>

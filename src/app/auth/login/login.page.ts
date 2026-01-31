@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonicModule, LoadingController, ToastController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -9,14 +11,38 @@ import { CommonModule } from '@angular/common';
   imports: [
     CommonModule,
     IonicModule, // 🔥 THIS fixes ion-icon, ion-content, ion-spinner
+    FormsModule  
   ],
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss']
 })
 export class LoginPage implements OnInit {
-  mobileNumber: string = '';
-  countryCode: string = '+91';
+  // private readonly STATIC_EMP_ID = 'EMP1';
+  // private readonly STATIC_PASSWORD = '5555B';
+  employeeId: string = '';
+  password: string = '';
   isLoading: boolean = false;
+  loginButtonText: string = 'Login';
+  keyboardMode: 'abc' | '123' = 'abc';
+  activeField: 'employeeId' | 'password' = 'employeeId';
+  abcKeys = [
+      ['Q','W','E','R','T','Y','U','I','O','P'],
+      ['A','S','D','F','G','H','J','K','L'],
+      ['Z','X','C','V','B','N','M']
+    ];
+
+    numKeys = [
+      ['1','2','3'],
+      ['4','5','6'],
+      ['7','8','9']
+    ];
+
+    get currentKeys() {
+      return this.keyboardMode === 'abc' ? this.abcKeys : this.numKeys;
+    }
+    toggleKeyboard() {
+      this.keyboardMode = this.keyboardMode === 'abc' ? '123' : 'abc';
+    }
   
   // State variables
   showSplash: boolean = true; // Start with splash screen
@@ -26,7 +52,8 @@ export class LoginPage implements OnInit {
   constructor(
     private router: Router,
     private loadingCtrl: LoadingController,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private authService: AuthService   // ✅ ADD THIS
   ) {}
 
   ngOnInit() {
@@ -36,19 +63,19 @@ export class LoginPage implements OnInit {
     }, 2000);
   }
 
-  get formattedNumber(): string {
-    return this.mobileNumber; 
-  }
+  // get formattedNumber(): string {
+  //   return this.mobileNumber; 
+  // }
 
-  get isValidMobile(): boolean {
-    return this.mobileNumber.length === 10;
-  }
+  // get isValidMobile(): boolean {
+  //   return this.mobileNumber.length === 10;
+  // }
 
   // --- Interaction Logic ---
 
-  openKeypad() {
-    this.showKeypad = true;
-  }
+  // openKeypad() {
+  //   this.showKeypad = true;
+  // }
 
   closeKeypad() {
     this.showKeypad = false;
@@ -60,57 +87,68 @@ export class LoginPage implements OnInit {
     this.router.navigate(['/third-screen']); 
   }
 
+  openForgotPassword() {
+    this.router.navigate(['/forgot-password']);
+  }
+
+  openLoginMobile(){
+    this.router.navigate(['/login-mobile']);
+  }
+
   onKeyPress(key: string) {
-    if (key === 'BACKSPACE') {
-      this.mobileNumber = this.mobileNumber.slice(0, -1);
-      // Reset error on modification
-      this.isError = false; 
-    } 
-    else if (key === 'ENTER') {
-      this.requestOTP();
-    } 
-    else {
-      if (this.mobileNumber.length < 10) {
-        this.mobileNumber += key;
-        this.isError = false; 
-      }
-    }
+        const target: 'employeeId' | 'password' = this.activeField;
+
+  if (key === 'BACKSPACE') {
+    this[target] = this[target].slice(0, -1);
+    return;
+  }
+
+  this[target] += key;
   }
 
   // --- API / Validation Logic ---
 
-  async requestOTP() {
-    this.isLoading = true;
-
-    // Simulate validation failure for demo
-    if (!this.isValidMobile) {
-      setTimeout(() => {
-        this.isLoading = false;
-        this.isError = true; // Trigger Error UI + Back Button
-      }, 500);
-      return;
-    }
-
-    // Success Path
-    try {
-      this.showToast('OTP sent successfully!', 'success');
-this.isError = false;
-this.closeKeypad();
-
-/* 🔥 ADD THIS */
-setTimeout(() => {
-  this.router.navigate(['/login-otp'], {
-    state: {
-        mobile: this.mobileNumber
-          }
-        });
-      }, 500);
-    } catch (error) {
-      this.showToast('Network Error', 'danger');
-    } finally {
-      this.isLoading = false;
-    }
+async login() {
+  // 🔴 BLOCK EMPTY LOGIN
+  if (!this.employeeId || !this.password) {
+    await this.showToast(
+      'Employee ID and Password are required',
+      'danger'
+    );
+    return;
   }
+
+  this.isLoading = true;
+  this.isError = false;
+
+  try {
+    const result = await this.authService.login({
+      employeeId: this.employeeId,
+      password: this.password
+    });
+
+    this.isLoading = false;
+
+    if (result.isFirstLogin) {
+        this.router.navigate(['/forgot-password'], {
+      queryParams: { username: this.employeeId }
+    });
+    } else {
+      this.router.navigate(['/home']);
+    }
+
+
+  } catch (error) {
+    this.isLoading = false;
+    this.isError = true;
+    await this.showToast(
+      typeof error === 'string' ? error : 'Login failed',
+      'danger'
+    );
+  }
+}
+
+
 
   async showToast(message: string, color: 'success' | 'danger') {
     const toast = await this.toastCtrl.create({
