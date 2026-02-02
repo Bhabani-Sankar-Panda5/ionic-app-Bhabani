@@ -34,6 +34,7 @@ async validateUser(empId: string): Promise<{
   contactPhone?: string;
   isFirstLogin?: boolean;
   lastLogin?: string;
+  sfEmployeeId?: string;
 }> {
   try {
     const response: any = await this.http.get(
@@ -45,7 +46,8 @@ async validateUser(empId: string): Promise<{
         valid: true,
         contactPhone: response.contactPhone,
         isFirstLogin: response.isFirstLogin === 'Y',
-        lastLogin: response.lastLogin
+        lastLogin: response.lastLogin,
+        sfEmployeeId: response.sfEmployeeId   // ✅ ADD THIS
       };
     }
 
@@ -177,6 +179,15 @@ async hasTokenButNoSession(): Promise<boolean> {
 
   return !!token && !sessionId;
 }
+
+async storeUsername(username: string) {
+  await this._storage?.set('username', username);
+}
+
+async getUsername(): Promise<string | null> {
+  return await this._storage?.get('username');
+}
+
     
 
 
@@ -234,7 +245,7 @@ await this.setSession({
   token: response.token,
   sessionId: decodedToken.sessionId, // ✅ REAL sessionId
   lastLogin: response.lastLogin,      // ✅ BACKEND DATE
-  sfEmployeeId: response.sfEmployeeId || null,
+  sfEmployeeId: response.sfEmployeeId,
   sfManagerId: response.sfManagerId || null,
   employeeType: response.employeetype || null
 });
@@ -261,6 +272,47 @@ await this.setSession({
     throw 'Something went wrong. Please try again.';
   }
 }
+
+async storeSfEmployeeId(sfEmployeeId: string) {
+  await this._storage?.set('sfEmployeeId', sfEmployeeId);
+}
+
+async getSfEmployeeId(): Promise<string | null> {
+  return await this._storage?.get('sfEmployeeId');
+}
+
+async validateLogin(): Promise<void> {
+  const empId = await this.getSfEmployeeId();
+  const username = await this.getUsername(); // 🔥 REAL EMPLOYEE ID
+
+  if (!empId || !username) {
+    throw 'Employee ID or Username missing';
+  }
+
+  const payload = {
+    empId,
+    username
+  };
+
+  const response: any = await this.http
+    .post(`${this.baseUrl}/api/validateLogin`, payload)
+    .toPromise();
+
+  const decodedToken: any = JSON.parse(
+    atob(response.token.split('.')[1])
+  );
+
+  await this.setSession({
+    token: response.token,
+    sessionId: decodedToken.sessionId,
+    lastLogin: response.lastLogin,
+    sfEmployeeId: response.sfEmployeeId,
+    sfManagerId: response.sfManagerId,
+    employeeType: response.employeetype
+  });
+}
+
+
 
 async resetPassword(username: string, newPassword: string): Promise<void> {
 
@@ -355,18 +407,6 @@ async resetPassword(username: string, newPassword: string): Promise<void> {
     return true;
   }
 
-  async createOtpSession() {
-  const today = this.getTodayDate();
-
-  await this.setSession({
-    token: 'OTP_STATIC_TOKEN',
-    sessionId: 'OTP_SESSION_' + Date.now(),
-    lastLogin: today,          // OTP flow uses today
-    sfEmployeeId: null,
-    sfManagerId: null,
-    employeeType: null
-  });
-}
 
 
 

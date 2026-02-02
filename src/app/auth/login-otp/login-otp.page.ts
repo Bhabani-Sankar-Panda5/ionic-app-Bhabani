@@ -72,17 +72,16 @@ async verifyOtp() {
       return;
     }
 
-  // ✅ 1️⃣ Create OTP session
-  await this.authService.createOtpSession();
-
-  // ✅ 2️⃣ Mark OTP verified (store loginDate)
   await this.authService.markOtpVerified();
 
-  // ✅ 3️⃣ Navigate to Home
+  // 🔥 CALL BACKEND LOGIN API
+  await this.authService.validateLogin();
+
+  // ✅ NOW USER IS LOGGED IN
   this.router.navigate(['/home']);
 
     
-  }
+}
 
 
 

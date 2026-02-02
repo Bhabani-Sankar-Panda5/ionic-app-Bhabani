@@ -15,9 +15,27 @@
 
 <!-- ================= CONTENT ================= -->
 <ion-content>
+  <!-- ================= SEARCH BAR ================= -->
+<div class="search-bar-wrapper">
+  <ion-item lines="none" class="search-item">
+    <ion-input
+      placeholder="Search with Name"
+      [(ngModel)]="searchText"
+      (ionInput)="filterCustomers()"
+      clear-input
+    ></ion-input>
+
+    <ion-icon
+      name="search-outline"
+      slot="end"
+      class="search-icon">
+    </ion-icon>
+  </ion-item>
+</div>
+
   <div class="main-wrapper">
   <ion-item
-  *ngFor="let customer of customers; trackBy: trackByCustomer"
+  *ngFor="let customer of filteredCustomers; trackBy: trackByCustomer"
   
   routerLink="/customer-details"
   class="customer-card"

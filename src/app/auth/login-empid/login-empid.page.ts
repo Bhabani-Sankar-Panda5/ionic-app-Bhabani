@@ -82,6 +82,14 @@ async verifyEmpId() {
       return;
     }
 
+    // ✅ STORE sfEmployeeId FOR OTP FLOW
+  if (result.sfEmployeeId) {
+      await this.authService.storeSfEmployeeId(result.sfEmployeeId);
+    }
+    // 🔥 ADD THIS
+await this.authService.storeUsername(this.employeeId);
+
+
     const isFirstLogin = result.isFirstLogin === true;
     const isLastLoginToday =
       result.lastLogin && this.isSameDay(result.lastLogin);

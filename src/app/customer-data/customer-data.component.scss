@@ -98,3 +98,27 @@ ion-content {
   color: #909090;
   flex-shrink: 0;
 }
+
+/* ================= SEARCH BAR ================= */
+.search-bar-wrapper {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #ffffff;
+  padding: 10px 16px 6px;
+}
+
+.search-item {
+  --background: #f3f4f6;
+  border-radius: 6px;
+  padding-left: 10px;
+}
+
+.search-item ion-input {
+  font-size: 14px;
+}
+
+.search-icon {
+  font-size: 20px;
+  color: #909090;
+}
