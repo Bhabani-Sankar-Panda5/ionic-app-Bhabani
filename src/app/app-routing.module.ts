@@ -33,6 +33,12 @@ const routes: Routes = [
   loadComponent: () =>
     import('./auth/login-mobile/login-mobile.page').then(m => m.LoginMobilePage)
   },
+  {
+  path: 'login-empid',
+  loadComponent: () =>
+    import('./auth/login-empid/login-empid.page').then(m => m.LoginEmpidPage)
+  },
+
 
   // CUSTOMER LIST PAGE
   {

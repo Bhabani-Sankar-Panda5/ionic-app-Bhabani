@@ -18,38 +18,36 @@ export class AppComponent {
 async ngOnInit() {
   await this.authService.init();
 
-  const hasSession = await this.authService.hasValidSession();
-  const isOtpRequired = await this.authService.isOtpRequired();
+  const hasValidSession = await this.authService.hasValidSession();
   const sessionStatus = await this.authService.validateSession();
-  const hasTokenButNoSession = await this.authService.hasTokenButNoSession();
+  const isOtpRequired = await this.authService.isOtpRequired();
+  const hasToken = await this.authService.hasToken();
+  const hasTokenNoSession = await this.authService.hasTokenButNoSession();
 
-  /**
-   * 1️⃣ Valid session + same day → HOME
-   */
-  if (hasSession && sessionStatus === 'VALID' && !isOtpRequired) {
+  // 1️⃣ Same day + valid session → HOME
+  if (hasValidSession && sessionStatus === 'VALID' && !isOtpRequired) {
     this.router.navigate(['/home']);
     return;
   }
 
-  /**
-   * 2️⃣ Token exists BUT sessionId missing → Username/Password
-   * (Multi-device logout / manual session delete)
-   */
-  if (hasTokenButNoSession) {
-    await this.authService.clearSession();
+  // 2️⃣ Same day + token exists BUT session missing → LOGIN
+  if (hasTokenNoSession && !isOtpRequired) {
     this.router.navigate(['/login']);
     return;
   }
 
-  /**
-   * 3️⃣ Everything else → OTP login
-   * - First install
-   * - loginDate deleted
-   * - loginDate < today
-   * - No token
-   */
-  this.router.navigate(['/login-mobile']);
+  // 3️⃣ Token exists BUT new day → EMP ID (OTP decision)
+  if (hasToken && isOtpRequired) {
+    this.router.navigate(['/login-empid']);
+    return;
+  }
+
+  // 4️⃣ No token at all → EMP ID
+  this.router.navigate(['/login-empid']);
+  //this.router.navigate(['/customer-data']);
 }
+
+
 
 
 

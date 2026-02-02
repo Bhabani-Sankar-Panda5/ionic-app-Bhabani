@@ -8,6 +8,8 @@ import { HttpClient } from '@angular/common/http';
 export class AuthService {
 
   private USE_MOCK_RESET_PASSWORD = false; // 🔴 turn OFF when backend is ready
+  // private USE_MOCK_VALIDATE_USER = true; // 🔹 temporary for testing
+
   private _storage: Storage | null = null;
   private baseUrl = 'https://ars-steels-app-0fd20ff3663d.herokuapp.com'; // 🔹 replace with your backend URL
 
@@ -22,6 +24,101 @@ export class AuthService {
   async init(): Promise<void> {
     this._storage = await this.storage.create();
   }
+
+
+  // -----------------------------
+// VALIDATE USER BY EMPLOYEE ID
+// -----------------------------
+async validateUser(empId: string): Promise<{
+  valid: boolean;
+  contactPhone?: string;
+  isFirstLogin?: boolean;
+  lastLogin?: string;
+}> {
+  try {
+    const response: any = await this.http.get(
+      `${this.baseUrl}/api/validateUser?key=${empId}`
+    ).toPromise();
+
+    if (response?.message === 'Valid User') {
+      return {
+        valid: true,
+        contactPhone: response.contactPhone,
+        isFirstLogin: response.isFirstLogin === 'Y',
+        lastLogin: response.lastLogin
+      };
+    }
+
+    return { valid: false };
+
+  } catch (error) {
+    console.error('Validate user failed', error);
+    return { valid: false };
+  }
+}
+
+//Testing purpose
+// async validateUser(empId: string): Promise<{
+//   valid: boolean;
+//   contactPhone?: string;
+//   isFirstLogin?: boolean;
+//   lastLogin?: string;
+// }> {
+
+//   if (this.USE_MOCK_VALIDATE_USER) {
+//     // MOCK DATA FOR TESTING
+//     if (empId === 'NEWUSER1') {
+//       return {
+//         valid: true,
+//         contactPhone: '9999999999',
+//         isFirstLogin: true,       // first-time user → OTP page
+//         lastLogin: undefined      
+//       };
+//     }
+//     if (empId === 'EXISTING1') {
+//       const yesterday = new Date();
+//       yesterday.setDate(yesterday.getDate() - 1);
+//       return {
+//         valid: true,
+//         contactPhone: '8888888888',
+//         isFirstLogin: false,      // existing user
+//         lastLogin: yesterday.toISOString().split('T')[0] // new day → OTP page
+//       };
+//     }
+//     if (empId === 'YESTERDAY1') {
+//       const yesterday = new Date();
+//       yesterday.setDate(yesterday.getDate() - 1);
+//       return {
+//         valid: true,
+//         contactPhone: '7777777777',
+//         isFirstLogin: false,      // existing user
+//         lastLogin: yesterday.toISOString().split('T')[0] // yesterday → EMP ID
+//       };
+//     }
+//   }
+
+//   // Original API call
+//   try {
+//     const response: any = await this.http.get(
+//       `${this.baseUrl}/api/validateUser?key=${empId}`
+//     ).toPromise();
+
+//     if (response?.message === 'Valid User') {
+//       return {
+//         valid: true,
+//         contactPhone: response.contactPhone,
+//         isFirstLogin: response.isFirstLogin === 'Y',
+//         lastLogin: response.lastLogin
+//       };
+//     }
+
+//     return { valid: false };
+//   } catch (error) {
+//     console.error('Validate user failed', error);
+//     return { valid: false };
+//   }
+// }
+
 
 // -----------------------------
 // VALIDATE PHONE NUMBER (API)
@@ -52,22 +149,24 @@ async validatePhone(mobile: string): Promise<boolean> {
     // VALIDATE SESSION WITH BACKEND
     // -----------------------------
     async validateSession(): Promise<'VALID' | 'INVALID'> {
-
       const token = await this._storage?.get('token');
       const sessionId = await this._storage?.get('sessionId');
+      const loginDate = await this._storage?.get('loginDate');
 
-      if (!token || !sessionId) {
+      if (!token || !sessionId || !loginDate) {
         return 'INVALID';
       }
 
-      // 🔴 STATIC LOGIC FOR NOW (replace with backend API later)
-      // Assume session IDs starting with "OTP_SESSION_" are valid
-      if (sessionId.startsWith('OTP_SESSION_') || sessionId.startsWith('SESSION_')) {
-        return 'VALID';
-      }
-
-      return 'INVALID';
+      return 'VALID'; // ✅ trust JWT for now
     }
+
+// -----------------------------
+// CHECK IF USER IS KNOWN (TOKEN EXISTS)
+// -----------------------------
+async hasToken(): Promise<boolean> {
+  const token = await this._storage?.get('token');
+  return !!token && token !== 'undefined';
+}
 
     // -----------------------------
 // CHECK PARTIAL SESSION STATE
@@ -104,7 +203,7 @@ async hasTokenButNoSession(): Promise<boolean> {
   // Real Backend LOGIN (replace later with API)
   // -----------------------------
 async login(credentials: { employeeId: string; password: string })
-: Promise<{ token: string; isFirstLogin: boolean }> {
+: Promise<{ isFirstLogin: boolean }> {
 
   const payload = {
     username: credentials.employeeId, // backend expects "username"
@@ -127,11 +226,21 @@ async login(credentials: { employeeId: string; password: string })
         );
 
     // ✅ store session
-    const sessionId = response.sessionId || ('SESSION_' + Date.now());
-    await this.setSession(response.token, sessionId);
+    const decodedToken: any = JSON.parse(
+  atob(response.token.split('.')[1])
+);
+
+await this.setSession({
+  token: response.token,
+  sessionId: decodedToken.sessionId, // ✅ REAL sessionId
+  lastLogin: response.lastLogin,      // ✅ BACKEND DATE
+  sfEmployeeId: response.sfEmployeeId || null,
+  sfManagerId: response.sfManagerId || null,
+  employeeType: response.employeetype || null
+});
+
 
     return {
-      token: response.token,
       isFirstLogin: response.isFirstLogin === 'Y'
     };
 
@@ -196,16 +305,26 @@ async resetPassword(username: string, newPassword: string): Promise<void> {
   // -----------------------------
   // STORE TOKEN + TODAY DATE
   // -----------------------------
-  async setSession(token: string, sessionId: string) {
-      if (!token || !sessionId) {
-        return;
-      }
+  async setSession(data: {
+      token: string;
+      sessionId: string;
+      lastLogin: string;
+      sfEmployeeId: string | null;
+      sfManagerId: string | null;
+      employeeType: string | null;
+    }) {
+        const normalizedDate = data.lastLogin
+    ? data.lastLogin.split('T')[0].split(' ')[0]
+    : this.getTodayDate();
 
-      const today = this.getTodayDate();
-      await this._storage?.set('token', token);
-      await this._storage?.set('sessionId', sessionId);
-      await this._storage?.set('loginDate', today);
-  }
+      await this._storage?.set('token', data.token);
+      await this._storage?.set('sessionId', data.sessionId);
+      await this._storage?.set('loginDate', normalizedDate);
+      await this._storage?.set('sfEmployeeId', data.sfEmployeeId);
+      await this._storage?.set('sfManagerId', data.sfManagerId);
+      await this._storage?.set('employeeType', data.employeeType);
+    }
+
 
   // -----------------------------
   // CHECK SESSION (APP START)
@@ -236,13 +355,18 @@ async resetPassword(username: string, newPassword: string): Promise<void> {
     return true;
   }
 
-  // TEMP: Create session after OTP (replace with real API later)
-    async createOtpSession() {
-      const token = 'OTP_STATIC_TOKEN';
-      const sessionId = 'OTP_SESSION_' + Date.now();
+  async createOtpSession() {
+  const today = this.getTodayDate();
 
-      await this.setSession(token, sessionId);
-    }
+  await this.setSession({
+    token: 'OTP_STATIC_TOKEN',
+    sessionId: 'OTP_SESSION_' + Date.now(),
+    lastLogin: today,          // OTP flow uses today
+    sfEmployeeId: null,
+    sfManagerId: null,
+    employeeType: null
+  });
+}
 
 
 

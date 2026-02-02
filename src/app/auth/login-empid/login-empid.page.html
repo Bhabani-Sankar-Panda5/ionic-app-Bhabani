@@ -1,0 +1,151 @@
+<ion-content [fullscreen]="false">
+
+  <!-- SPLASH SCREEN -->
+  <div class="splash-container" *ngIf="showSplash">
+    <div class="splash-logo-wrapper">
+      <img
+        src="https://api.builder.io/api/v1/image/assets/TEMP/2d5826d58c22c1d10e86105e94fc8c7642f220f5?width=476"
+        alt="ARS Green Steel Logo"
+        class="company-logo"
+      />
+    </div>
+
+    <div class="splash-illustration">
+      <img
+        src="assets/factory_illustration.png"
+        alt="Factory Illustration"
+        class="illustration-img"
+      />
+    </div>
+
+    <div class="splash-loader">
+      <ion-spinner name="crescent" color="primary"></ion-spinner>
+    </div>
+  </div>
+
+  <!-- MAIN CONTAINER -->
+  <div class="login-container" *ngIf="!showSplash" [class.has-keypad]="showKeypad">
+
+    <!-- HEADER -->
+    <header class="header-section">
+      <div class="logo-wrapper">
+        <img
+          src="https://api.builder.io/api/v1/image/assets/TEMP/2d5826d58c22c1d10e86105e94fc8c7642f220f5?width=476"
+          alt="ARS Green Steel Logo"
+          class="company-logo"
+        />
+      </div>
+    </header>
+
+    <!-- FORM -->
+    <main class="form-content">
+
+      <!-- ERROR -->
+      <div class="error-banner" *ngIf="isError">
+        <ion-icon name="close-circle" class="error-icon-badge"></ion-icon>
+        <span class="error-text">Invalid employee id</span>
+      </div>
+
+      <!-- TITLE -->
+      <div class="title-section">
+        <h2 class="login-title">Login</h2>
+        <p class="subtitle">Enter your employee id</p>
+      </div>
+
+      <form class="login-form" (submit)="$event.preventDefault()">
+
+        <!-- EMPLOYEE ID INPUT -->
+        <div
+          class="input-field"
+          [class.active-focus]="showKeypad && !isError"
+          [class.error-state]="isError"
+        >
+          <div class="phone-icon-wrapper">
+            <ion-icon name="person-outline" class="input-icon"></ion-icon>
+          </div>
+
+          <div class="input-wrapper">
+            <input
+              type="text"
+              name="employeeId"
+              [(ngModel)]="employeeId"
+              class="mobile-input"
+              placeholder="Employee ID"
+              (focus)="activeField = 'employeeId'; showKeypad = true"
+            />
+          </div>
+        </div>
+
+        <!-- VERIFY BUTTON -->
+        <div class="button-container">
+          <button
+            type="button"
+            class="otp-button"
+            (click)="verifyEmpId()"
+            [disabled]="isLoading"
+          >
+            <span class="button-text">
+              {{ isLoading ? 'Verifying...' : 'Verify' }}
+            </span>
+          </button>
+        </div>
+
+      </form>
+    </main>
+
+    <!-- VIRTUAL KEYPAD (UNCHANGED) -->
+    <section class="virtual-keypad" *ngIf="showKeypad">
+
+      <div class="keypad-toolbar">
+        <div class="toolbar-left">
+          <ion-icon name="chevron-back" class="toolbar-icon"></ion-icon>
+        </div>
+        <div class="toolbar-center">
+          <span class="gif-text">GIF</span>
+          <ion-icon name="settings-sharp" class="toolbar-icon"></ion-icon>
+          <ion-icon name="language" class="toolbar-icon"></ion-icon>
+          <ion-icon name="happy-outline" class="toolbar-icon"></ion-icon>
+          <ion-icon name="ellipsis-horizontal" class="toolbar-icon"></ion-icon>
+        </div>
+        <div class="toolbar-right">
+          <ion-icon name="mic" class="toolbar-icon"></ion-icon>
+        </div>
+      </div>
+
+      <div class="keypad-grid">
+        <div class="keypad-row">
+          <button class="key-btn" *ngFor="let k of currentKeys[0]" (click)="onKeyPress(k)">
+            <span class="num">{{ k }}</span>
+          </button>
+        </div>
+
+        <div class="keypad-row">
+          <button class="key-btn" *ngFor="let k of currentKeys[1]" (click)="onKeyPress(k)">
+            <span class="num">{{ k }}</span>
+          </button>
+        </div>
+
+        <div class="keypad-row">
+          <button class="key-btn" *ngFor="let k of currentKeys[2]" (click)="onKeyPress(k)">
+            <span class="num">{{ k }}</span>
+          </button>
+        </div>
+
+        <div class="keypad-row bottom-row">
+          <button class="key-btn action-btn" (click)="toggleKeyboard()">
+            <span class="num">{{ keyboardMode === 'abc' ? '123' : 'ABC' }}</span>
+          </button>
+
+          <button class="key-btn" (click)="onKeyPress(' ')">
+            <span class="num">Space</span>
+          </button>
+
+          <button class="key-btn action-btn" (click)="onKeyPress('BACKSPACE')">
+            <ion-icon name="backspace-outline" class="action-icon"></ion-icon>
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</ion-content>
